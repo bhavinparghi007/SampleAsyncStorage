@@ -68,6 +68,7 @@ import {
   addNetworkCheckListener,
   removeNetworkCheckListener
 } from "./NetworkUtils";
+import SplashScreen from "./SplashScreen";
 
 class Varam extends React.Component {
   constructor(props) {
@@ -140,6 +141,7 @@ class Varam extends React.Component {
 
   get_splashscreen() {
     console.log("in get splash");
+    alert("in get splash");
     return (
       <View style={styles.viewStyles}>
         <Text style={styles.textStyles}>Blitz Reading</Text>
@@ -148,18 +150,18 @@ class Varam extends React.Component {
   }
 
   _onLoadEnd() {
-    console.log("load ended");
     this.setState({ splash: false });
+    console.log("load ended");
   }
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {SplashScreen(this.state.splash)}
-
+        {/* {SplashScreen(this.state.splash)} */}
+        {this.state.splash ? <SplashScreen /> : null}
         <WebView
           startInLoadingState={true}
           geolocationEnabled={true}
-          onLoadEnd={this._onLoadEnd.bind(this)}
+          onLoadEnd={() => this._onLoadEnd()}
           source={{ uri: "http://52.66.190.178/login-2" }}
           ref={webView => {
             this.webView.ref = webView;
@@ -203,26 +205,6 @@ const styles = {
     color: "#333333",
     marginBottom: 5
   }
-};
-
-const SplashScreen = visible => {
-  let screen = (
-    <View style={styles.viewStyles}>
-      <Image
-        style={{ width: "100%", height: "50%" }}
-        source={require("./resources/varam_splash.png")}
-        // source={Platform.OS === "ios" ? require("./resources/varam.png") : {uri: "file:///android_asset/varam.png"}}
-        // source={{uri: 'http://52.66.190.178/wp-content/uploads/2019/06/varam.png'}}
-
-        // source={{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}}
-      />
-      <ActivityIndicator color="black"/>
-    </View>
-  );
-  console.log("screen");
-  console.log(screen);
-  console.log(visible);
-  return visible ? screen : null;
 };
 
 export default Varam;
